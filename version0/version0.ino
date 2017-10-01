@@ -10,24 +10,24 @@ int winner(int pts1, int pts2);
 //#define PIN 2
 //#define PIN 3
 const int buttonPin1 = 2;     	// the number of the pushbutton1 pin
-const int buttonPin2 = 3; 		// the number of the pushbutton2 pin
+const int buttonPin2 = 9; 		// the number of the pushbutton2 pin
 const int ledPin =  6;      	// the number of the LED pin
 
 // variables will change:
 int buttonState1 = 0;         // variable for reading the pushbutton1 status
 int buttonState2 = 0;         // variable for reading the pushbutton2 status
 int swap;						// variable for adjusting the direction of lights loop
-int button1Loc=17;
-int button2Loc=55;
+int button1Loc=7;
+int button2Loc=52;
 int direct=1;
-float faster=150;
+float faster=100;
 int lightRangeForward=0;
 int lightRangeBack=0;
 uint16_t lightLocation=0;
 int score1=0;
 int score2=0;
 int finalScore=0;
-int level=4;
+int level=2;
 int score1sum= 0;
 int score2sum= 0; 
 int pixelCount = 59;
@@ -41,8 +41,8 @@ void setup() {
 #endif
 
 Serial.begin(9600);
-Serial.println("SMACKDOWN CHALLENGE");
-Serial.println("Level 1: First player to 5 points WINS!"); 
+//Serial.println("SMACKDOWN CHALLENGE");
+//Serial.println("Level 1: First player to 5 points WINS!"); 
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
 
@@ -62,78 +62,78 @@ Serial.println("Level 1: First player to 5 points WINS!");
                 buttonState1 = digitalRead(buttonPin1);
                 buttonState2 = digitalRead(buttonPin2);
                 
-	      if (buttonState1 == HIGH && checkRange(direct, lightLocation, button1Loc)== TRUE) 
+	      if (buttonState1 == LOW && checkRange(direct, lightLocation, button1Loc)== TRUE) 
 		{
                    delay(1000);
   		   direct = direct*-1;
-                   faster = faster*.99;
+                   faster = faster*.95;
                    //Serial.println(faster);
                    if(button1Loc == lightLocation)
                     {
                        score1 = score1 +1;
-                      Serial.print("Hulk Hogan score = ");
-                      Serial.println(score1);  
+                      //Serial.print("Hulk Hogan score = ");
+                      Serial.println(String(score1)+ " " + String(score2) + " " + String(level)); 
                     }
                     else
                     {
                       score1 = score1 -1;
                       if (score1 < 0)
                        {score1 = 0;}
-                      Serial.print("Hulk Hogan score = ");
-                      Serial.println(score1); 
+                      //Serial.print("Hulk Hogan score = ");
+                      Serial.println(String(score1)+ " " + String(score2) + " " + String(level)); 
                     }  
                  }
                             
-	      if (buttonState2 == HIGH && checkRange(direct, lightLocation, button2Loc)==TRUE)
+	      if (buttonState2 == LOW && checkRange(direct, lightLocation, button2Loc)==TRUE)
                 {
                   delay(1000);
                   direct = direct*-1;
-                  faster = faster*.999;
+                  faster = faster*.95;
                   //Serial.println(faster);
                   if (button2Loc == lightLocation)
                   {
                     
                     score2 = score2 +1;
-                   Serial.print("The Rock score = ");
-                      Serial.println(score2); 
+                   //Serial.print("The Rock score = ");
+                      Serial.println(String(score1)+ " " + String(score2) + " " + String(level)); 
                   }
                   else
                   {
                     score2 = score2 -1;
                     if (score2 < 0)
                      {score2 = 0;}
-                    Serial.print("The Rock score = ");
-                      Serial.println(score2); 
+                      Serial.println(String(score1)+ " " + String(score2) + " " + String(level)); 
+                     
                   } 
                 }
                 if (finalScore= winner(score1, score2, level) > 0)
                 {
                   
-                  Serial.println("We have a WINNER!"); 
+                  //Serial.println("We have a WINNER!"); 
                   if (score1> score2)
                   {
-                    Serial.println("HULK HOGAN WINS THIS ROUND!");
-                    colorWipe(strip.Color( 0, 255, 0), 30); // Green
+                    //Serial.println("HULK HOGAN WINS THIS ROUND!");
+                    colorWipe(strip.Color(  0,   0, 255), 30); // Blue
                     score1sum = score1sum + 1; 
                   }
                    if (score2> score1)
                   {
-                    Serial.println("THE ROCK WINS THIS ROUND!");
-                     colorWipe(strip.Color(  0,   0, 255), 30); // Blue
+                    //Serial.println("THE ROCK WINS THIS ROUND!");
+                     colorWipe(strip.Color( 0, 255, 0), 30); // Green
                     score2sum = score2sum + 1;
                   }
                   if(score1sum-score2sum > 2)
                   {
-                    Serial.println("Winner by a Unanimous Decision: HULK HOGAN!!");
-                    colorWipe(strip.Color( 0, 255, 0), 30); // Green
-                    Serial.println("Open new Serial Monitor to start a NEW GAME");
+                    //Serial.println("Winner by a Unanimous Decision: HULK HOGAN!!");
+                    colorWipe(strip.Color(  0,   0, 255), 30); // Blue
+                    //Serial.println("Open new Serial Monitor to start a NEW GAME");
                     break;
                   }
                   if(score2sum-score1sum > 2)
                   {
-                    Serial.println("Winner by a Unanimous Decision: THE ROCK!!");
-                    colorWipe(strip.Color(  0,   0, 255), 30); // Blue
-                    Serial.println("Open new Serial Monitor to start a NEW GAME");
+                    //Serial.println("Winner by a Unanimous Decision: THE ROCK!!");
+                    colorWipe(strip.Color( 0, 255, 0), 30); // Green
+                    //Serial.println("Open new Serial Monitor to start a NEW GAME");
                     break;
                   }
                   theaterChase(strip.Color(127, 127, 127), 10); // White
@@ -144,30 +144,30 @@ Serial.println("Level 1: First player to 5 points WINS!");
                   level = level - 1; 
                   if (level==3)
                   {
-                    Serial.println("ENTERING LEVEL 2: First Player to 4 WINS!");
+                    //Serial.println("ENTERING LEVEL 2: First Player to 4 WINS!");
                   }
                    if (level==2)
                   {
-                    Serial.println("ENTERING LEVEL 3: First Player to 3 WINS!");
+                    //Serial.println("ENTERING LEVEL 3: First Player to 3 WINS!");
                   }
                    if (level==1)
                   {
-                    Serial.println("ENTERING LEVEL 3: First Player to 2 WINS!");
+                    //Serial.println("ENTERING LEVEL 3: First Player to 2 WINS!");
                   }
                   if (level==0)
                   {
-                    Serial.println("ENTERING THE ULTIMATE CHAMPIONSHIP!!: First Player to 1 WINS!");
+                    //Serial.println("ENTERING THE ULTIMATE CHAMPIONSHIP!!: First Player to 1 WINS!");
                       if (score1> score2 && score1sum > score2sum)
                       {
-                        Serial.println("We have a CHAMPION!");
-                        Serial.println("HULK HOGAN WINS THE GAME!");
-                        Serial.println("Open new Serial Monitor to start a NEW GAME");
+                        //Serial.println("We have a CHAMPION!");
+                        //Serial.println("HULK HOGAN WINS THE GAME!");
+                        //Serial.println("Open new Serial Monitor to start a NEW GAME");
                       }
                        if (score2> score1 && score2sum > score1sum)
                       {
-                        Serial.println("We have a CHAMPION!");
-                        Serial.println("THE ROCK WINS THE GAME!");
-                        Serial.println("Open new Serial Monitor to start a NEW GAME");
+                        //Serial.println("We have a CHAMPION!");
+                        //Serial.println("THE ROCK WINS THE GAME!");
+                        //Serial.println("Open new Serial Monitor to start a NEW GAME");
                         
                       }
                   }
@@ -177,8 +177,8 @@ Serial.println("Level 1: First player to 5 points WINS!");
              lightLocation = lightLocation + (1*direct);
               if (faster < 5)
               { 
-                Serial.println("TIME IS UP. GAME OVER!!");
-                Serial.println("Open new Serial Monitor to start over");
+                //Serial.println("TIME IS UP. GAME OVER!!");
+                //Serial.println("Open new Serial Monitor to start over");
                 colorWipe(strip.Color(255, 0, 0), 50); // Red
                 break; 
               }
