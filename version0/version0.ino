@@ -51,6 +51,7 @@ Serial.begin(9600);
   // initialize the pushbutton pin as an input:
   pinMode(buttonPin1, INPUT);
   pinMode(buttonPin2, INPUT);
+  Serial.println(String(score1)+ " " + String(score2) + " " + String(level)); 
  } 
   void loop() 
 	{
@@ -122,20 +123,6 @@ Serial.begin(9600);
                      colorWipe(strip.Color( 0, 255, 0), 30); // Green
                     score2sum = score2sum + 1;
                   }
-                  if(score1sum-score2sum > 2)
-                  {
-                    //Serial.println("Winner by a Unanimous Decision: HULK HOGAN!!");
-                    colorWipe(strip.Color(  0,   0, 255), 30); // Blue
-                    //Serial.println("Open new Serial Monitor to start a NEW GAME");
-                    break;
-                  }
-                  if(score2sum-score1sum > 2)
-                  {
-                    //Serial.println("Winner by a Unanimous Decision: THE ROCK!!");
-                    colorWipe(strip.Color( 0, 255, 0), 30); // Green
-                    //Serial.println("Open new Serial Monitor to start a NEW GAME");
-                    break;
-                  }
                   theaterChase(strip.Color(127, 127, 127), 10); // White
                   rainbowCycle(.05);
                   theaterChaseRainbow(1); 
@@ -153,6 +140,10 @@ Serial.begin(9600);
                    if (level==1)
                   {
                     //Serial.println("ENTERING LEVEL 3: First Player to 2 WINS!");
+                  }
+                   if (level < 0) 
+                  {
+                    level = 0;
                   }
                   if (level==0)
                   {
